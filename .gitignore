@@ -1,0 +1,22 @@
+# ---------- 编译产物 ----------
+build/
+cmake-build-*/
+*.o
+*.obj
+*.elf
+*.hex
+*.bin
+*.map
+
+# ---------- CLion / CubeMX 的本地配置 ----------
+.idea/
+.mxproject
+*.launch
+
+# ---------- 我的临时备份 ----------
+*.bak_*
+.idea_leftover_*
+
+# ---------- Windows 垃圾文件 ----------
+Thumbs.db
+Desktop.ini
