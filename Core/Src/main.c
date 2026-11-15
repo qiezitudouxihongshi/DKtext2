@@ -28,6 +28,7 @@
 #include <string.h>
 #include "ws2812.h"
 #include <stdio.h>
+#include "buzzer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,8 +103,11 @@ int main(void)
   MX_DMA_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
+  MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
+  buzzer_init();
   ws2812_Update();
+  buzzer_action();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,7 +119,7 @@ int main(void)
       btn_flag = 0;
       printf("按键按下\r\n");
     }
-      HAL_Delay(100);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -6,7 +6,6 @@
 #define DM0_WS2812_H
 
 #include "tim.h"
-
 void ws2812_Update(void);
 
 #endif //DM0_WS2812_H
