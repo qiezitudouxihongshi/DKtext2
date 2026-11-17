@@ -26,9 +26,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
-#include "ws2812.h"
+#include "bsp_ws2812.h"
 #include <stdio.h>
-#include "buzzer.h"
+#include "bsp_buzzer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,11 +61,7 @@ static void MPU_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int _write(int file, char *ptr, int len)    //重定向
-{
-  HAL_UART_Transmit(&huart1, (uint8_t *)ptr, len, HAL_MAX_DELAY);
-  return len;
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -105,9 +101,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
-  buzzer_init();
+  // buzzer_init();
   ws2812_Update();
-  buzzer_action();
+  // buzzer_action();
   /* USER CODE END 2 */
 
   /* Infinite loop */

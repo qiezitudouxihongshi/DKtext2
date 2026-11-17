@@ -33,10 +33,8 @@ enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
-        Core/Inc/ws2812.h
-        Core/Src/ws2812.c
-        Core/Inc/buzzer.h
-        Core/Src/buzzer.c)
+
+)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
@@ -49,11 +47,15 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+        BSP/Src/bsp_ws2812.c
+        BSP/Src/bsp_buzzer.c
+        BSP/Src/bsp_uart.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+        ${CMAKE_CURRENT_SOURCE_DIR}/BSP/Inc
 )
 
 # Add project symbols (macros)
