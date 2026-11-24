@@ -225,6 +225,13 @@ SECTIONS
     __bss_end__ = _ebss;
       PROVIDE( __bss_end = .);
   } >DTCMRAM
+    /* DMA 缓冲区：必须放在 DMA 能访问的 RAM（DTCM 不行） */
+    .dma_buffer (NOLOAD) :
+    {
+      . = ALIGN(4);
+      *(.dma_buffer)
+      . = ALIGN(4);
+    } >RAM_D1
   PROVIDE( __non_tls_bss_start = ADDR(.bss) );
 
   PROVIDE( __bss_start = __tbss_start );

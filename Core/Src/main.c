@@ -101,7 +101,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
-  // buzzer_init();
+  buzzer_init();
+  ws2812_SetBrightness(30);
+  ws2812_SetColor(100, 20, 0);
   ws2812_Update();
   // buzzer_action();
   /* USER CODE END 2 */

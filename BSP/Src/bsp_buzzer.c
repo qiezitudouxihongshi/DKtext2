@@ -1,4 +1,5 @@
 #include "bsp_buzzer.h"
+#include "tim.h"
 
 // #define Do
 // #define Re

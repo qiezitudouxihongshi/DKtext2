@@ -5,7 +5,7 @@
 #ifndef DM0_BUZZER_H
 #define DM0_BUZZER_H
 
-#include "tim.h"
+
 void buzzer_init(void);
 void buzzer_action(void);
 
