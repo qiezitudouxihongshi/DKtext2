@@ -102,10 +102,9 @@ int main(void)
   MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
   buzzer_init();
-  ws2812_SetBrightness(30);
-  ws2812_SetColor(100, 20, 0);
+  ws2812_SetBrightness(10);
+  ws2812_SetColor(200, 0, 100);
   ws2812_Update();
-  // buzzer_action();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,6 +116,9 @@ int main(void)
       btn_flag = 0;
       printf("按键按下\r\n");
     }
+    //小星星
+    // Little_Star();
+
 
     /* USER CODE END WHILE */
 
