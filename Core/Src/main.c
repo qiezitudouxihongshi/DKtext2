@@ -29,6 +29,7 @@
 #include "bsp_ws2812.h"
 #include <stdio.h>
 #include "bsp_buzzer.h"
+#include "bsp_uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,7 +104,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   buzzer_init();
   ws2812_SetBrightness(10);
-  ws2812_SetColor(200, 0, 100);
+  ws2812_SetColor(200,0, 100);
   ws2812_Update();
   /* USER CODE END 2 */
 
@@ -111,13 +112,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      if (btn_flag == 1)
-    {
-      btn_flag = 0;
-      printf("按键按下\r\n");
-    }
-    //小星星
-    // Little_Star();
+    uint8_t tx_buf[]="hello\r\n";
+    uint8_t rx_buf[100];
+    uart_send(&huart1,tx_buf,sizeof(tx_buf)-1);
+    uint16_t len = uart_Receive(&huart1,rx_buf,sizeof(rx_buf)-1);
+    uart_send(&huart1,rx_buf,len);
+
+
 
 
     /* USER CODE END WHILE */

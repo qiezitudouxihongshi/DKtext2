@@ -4,7 +4,7 @@
 #define CCR_Low  30                    //ARR=90-1
 
 uint16_t ws2812_buffer[24+8] __attribute__((section(".dma_buffer")));
-uint8_t ws2812[3];        //G-R-B
+uint8_t ws2812[3];                     //G-R-B
 uint8_t ws2812_brightness = 255;       //亮度
 
 //设置亮度
@@ -16,7 +16,7 @@ void ws2812_SetBrightness(uint8_t brightness)
 //设置颜色
 void ws2812_SetColor(uint16_t g, uint16_t r, uint16_t b)
 {
-    //改变亮度
+    //改变亮度+颜色
     g = g*ws2812_brightness/255;
     r = r*ws2812_brightness/255;
     b = b*ws2812_brightness/255;
