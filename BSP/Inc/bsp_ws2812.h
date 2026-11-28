@@ -1,7 +1,7 @@
-#include "tim.h"
-
 #ifndef DM0_WS2812_H
 #define DM0_WS2812_H
+
+#include "tim.h"
 
 //亮度
 void ws2812_SetBrightness(uint8_t brightness);

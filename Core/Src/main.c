@@ -50,7 +50,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-volatile uint8_t btn_flag = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,28 +103,28 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
+
   buzzer_init();
   ws2812_SetBrightness(10);
   ws2812_SetColor(200,0,100);
   ws2812_Update();
-  uart_receive(&huart1);//启动第一次中断接受
+  uart_init(&huart1, &usart1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if (uart_getdata(text_buffer,&text_len) == 1)
+    if (uart_getdata(&huart1, text_buffer, &text_len) == 1)
     {
-      uart_send(&huart1,text_buffer,text_len);
+      uart_send(&huart1, text_buffer, text_len);
     }
-    if (uart_is_tx_complete() == 1)
+    if (uart_is_tx_complete(&huart1) == 1)
     {
       ws2812_SetBrightness(10);
-      ws2812_SetColor(0,200,0);
+      ws2812_SetColor(0, 200, 0);
       ws2812_Update();
-      HAL_Delay(10);
-
     }
 
     /* USER CODE END WHILE */
@@ -194,18 +194,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == GPIO_PIN_15)
-  {
-    uint32_t tick = HAL_GetTick();
-    while(HAL_GetTick() - tick < 20);
-    if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_15) == GPIO_PIN_RESET)
-    {
-      btn_flag = 1;
-    }
-  }
-}
+
 /* USER CODE END 4 */
 
  /* MPU Configuration */
