@@ -1,7 +1,7 @@
 #include "bsp_uart.h"
 
-Uart_t usart1;
-Uart_t uart5;
+Uart_t usart1 __attribute__((section(".dma_buffer"), aligned(32)));
+Uart_t uart5  __attribute__((section(".dma_buffer"), aligned(32)));
 
 //反查函数
 static Uart_t *uart_manage(UART_HandleTypeDef *huart)
@@ -19,7 +19,7 @@ void uart_init(UART_HandleTypeDef *huart,Uart_t *manage)
     manage->rx_index = 0;
     manage->rx_flag  = 0;
     manage->tx_flag  = 0;
-    HAL_UART_Receive_IT(huart, &(manage->rx_byte), 1);  //开启第一次中断接收
+    HAL_UARTEx_ReceiveToIdle_DMA(huart, manage->rx_buffer, sizeof(manage->rx_buffer) - 1);  //开启第一次中断接收
 
 }
 
@@ -54,35 +54,16 @@ uint8_t uart_is_tx_complete(UART_HandleTypeDef *huart)
     return 0;
 }
 
-
-//接收函数
-void uart_receive(UART_HandleTypeDef *huart)
-{
-    Uart_t *manage = uart_manage(huart);
-    if (manage != NULL)
-    {
-        HAL_UART_Receive_IT(huart, &(manage->rx_byte), 1);  //开启中断接收
-    }
-
-}
-
 //接受回调
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart,uint16_t Size)
 {
     Uart_t *manage = uart_manage(huart);
     if (manage != NULL)
     {
-        if (manage->rx_index < 99)
-        {
-            manage->rx_buffer[manage->rx_index] = manage->rx_byte;   //把收到的字节存到缓冲区里
-            manage->rx_index++;
-        }
-        if (manage->rx_byte == '\n')
-        {
-            manage->rx_flag = 1;
-            manage->rx_buffer[manage->rx_index] = '\0';
-        }
-        HAL_UART_Receive_IT(huart, &(manage->rx_byte), 1);
+
+        manage->rx_index=Size;
+        manage->rx_buffer[Size] = '\0';
+        manage->rx_flag = 1;
     }
 }
 
@@ -99,6 +80,7 @@ uint8_t uart_getdata(UART_HandleTypeDef *huart,uint8_t *out_buffer,uint16_t *out
         *out_len = manage->rx_index;
         manage->rx_flag = 0;
         manage->rx_index = 0;
+        HAL_UARTEx_ReceiveToIdle_DMA(huart, manage->rx_buffer, sizeof(manage->rx_buffer) - 1);
         return 1;       //1-成功取到数据  0-失败
     }
     return 0;
