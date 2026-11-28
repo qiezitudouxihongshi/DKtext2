@@ -62,7 +62,8 @@ static void MPU_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint8_t text_buffer[100];
+uint16_t text_len = 0;
 /* USER CODE END 0 */
 
 /**
@@ -104,22 +105,27 @@ int main(void)
   /* USER CODE BEGIN 2 */
   buzzer_init();
   ws2812_SetBrightness(10);
-  ws2812_SetColor(200,0, 100);
+  ws2812_SetColor(200,0,100);
   ws2812_Update();
+  uart_receive(&huart1);//启动第一次中断接受
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    uint8_t tx_buf[]="hello\r\n";
-    uint8_t rx_buf[100];
-    uart_send(&huart1,tx_buf,sizeof(tx_buf)-1);
-    uint16_t len = uart_Receive(&huart1,rx_buf,sizeof(rx_buf)-1);
-    uart_send(&huart1,rx_buf,len);
+    if (uart_getdata(text_buffer,&text_len) == 1)
+    {
+      uart_send(&huart1,text_buffer,text_len);
+    }
+    if (uart_is_tx_complete() == 1)
+    {
+      ws2812_SetBrightness(10);
+      ws2812_SetColor(0,200,0);
+      ws2812_Update();
+      HAL_Delay(10);
 
-
-
+    }
 
     /* USER CODE END WHILE */
 

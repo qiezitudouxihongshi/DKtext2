@@ -16,6 +16,7 @@ void buzzer_Set_freq(uint16_t freq)
     if(freq==0)
     {
         __HAL_TIM_SET_COMPARE(buzzer_TIM,buzzer_channel,0);
+        return;
     }
     uint32_t period = 1000000/freq;    //周期
     __HAL_TIM_SET_AUTORELOAD(buzzer_TIM,period);
